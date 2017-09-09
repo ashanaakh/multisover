@@ -1,8 +1,6 @@
 #include "solver.h"
 
-using namespace literals;
-
-void Solver::testfunc1(func function) {
+void Solver::testFunc(func function) {
   function();
 
   done = true;
@@ -15,11 +13,11 @@ Solver::Solver(bool a, bool b) : done(false), res2(b), res1(a) {}
 
 void Solver::manager() {
 
-  thread *first = new thread(&Solver::testfunc1, this, [&] {
+  thread* first = new thread(&Solver::testFunc, this, [&] {
     this_thread::sleep_for(1s);
   });
 
-  thread *second = new thread(&Solver::testfunc1, this, [&] {
+  thread* second = new thread(&Solver::testFunc, this, [&] {
     this_thread::sleep_for(10s);
   });
 
@@ -41,7 +39,6 @@ void Solver::manager() {
       delete second;
 
       cout << "result: " << (res1 && res2) << endl;
-
     }
   }
 }
