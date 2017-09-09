@@ -5,14 +5,14 @@ EXECUTABLE=build/solver
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): moveobj
+$(EXECUTABLE): compile moveobj
 	$(CXX) -o $(EXECUTABLE) $(OBJECTS)
 
-$(OBJECTS): clean
-	$(CXX) -c $(SOURCES)
-
-moveobj:$(OBJECTS)
+moveobj:
 	mv *.o build
+
+compile: clean
+	$(CXX) -c $(SOURCES)
 
 clean:
 	rm -rf $(OBJECTS) $(EXECUTABLE)
