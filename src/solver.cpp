@@ -23,11 +23,11 @@ void Solver::manager() {
 
   unique_lock<mutex> lock(m);
 
-  while(!done) {
+  while(not done) {
     cv.wait(lock);
 
     if(done) {
-      if (!res1 || !res2) {
+      if (not res1 || not res2) {
         first->detach();
         second->detach();
       } else {
