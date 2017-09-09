@@ -1,5 +1,7 @@
 # Solver
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1fe9046f03124dcc8b97a5e9f86be9cf)](https://www.codacy.com/app/ashanaakh/multisover)
+
 ## About
 [Lab work 1](https://drive.google.com/drive/u/0/folders/0B-BUpwNPP_9JNURqcm53R1dXam8)
 
