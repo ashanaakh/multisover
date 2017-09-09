@@ -1,21 +1,35 @@
+#include <cstdlib>
+#include <utility>
+#include <string>
+#include <exception>
+
 #include "solver.h"
 
-#include <string>
+void showUsage() {
+  cerr << "Usage --test <p1> <p2>, ";
+  cerr << "where p can be 0 - false, 1 - true" << endl;
+}
 
-// operation &&
+pair<int, int> cli(int count, char* argv[]) {
+  if (count != 4 || string(argv[1]) != "--test") {
+    showUsage();
+    throw exception();
+  } else {
+    bool p1 = atoi(argv[2]);
+    bool p2 = atoi(argv[3]);
 
-/*
- 00 -> 0
- 01 -> 0
- 10 -> 0
- 11 -> 1
- */
+    return pair<int, int>(p1, p2);
+  }
+}
 
-int main(int argc, char **argv) {
-
-  Solver solver(1, 1);
-
-  solver.manager();
+int main(int argc, char* argv[]) {
+  try {
+    auto params = cli(argc, argv);
+    Solver solver(params.first, params.second);
+    solver.manager();
+  } catch(exception& e) {
+    e.what();
+  }
 
   return 0;
 }
