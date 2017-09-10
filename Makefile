@@ -1,4 +1,4 @@
-CXX=clang++ -std=c++11
+CXX=clang++ -std=c++11 -Iinclude
 SOURCES=src/*.cpp
 OBJECTS=build/*.o
 EXECUTABLE=build/solver
@@ -16,3 +16,4 @@ compile: clean
 
 clean:
 	rm -rf $(OBJECTS) $(EXECUTABLE)
+
