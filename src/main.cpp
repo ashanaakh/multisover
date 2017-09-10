@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
   try {
     auto params = cli(argc, argv);
     Solver solver(params.first, params.second);
-    solver.manager();
+    solver.manager(5, 2);
   } catch(exception& e) {
     e.what();
   }
