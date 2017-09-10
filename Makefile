@@ -1,4 +1,4 @@
-CXX=clang++ -std=c++14
+CXX=clang++ -std=c++11
 SOURCES=src/*.cpp
 OBJECTS=build/*.o
 EXECUTABLE=build/solver
