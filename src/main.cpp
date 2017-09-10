@@ -3,7 +3,7 @@
 #include <string>
 #include <exception>
 
-#include "solver.h"
+#include "solver.hpp"
 
 void showUsage() {
   cerr << "Usage --test <p1> <p2>, ";
