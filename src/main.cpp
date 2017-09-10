@@ -6,14 +6,15 @@
 #include "solver.hpp"
 
 void showUsage() {
-  cerr << "Usage --test <p1> <p2>, ";
-  cerr << "where p can be 0 - false, 1 - true" << endl;
+  cerr << "Usage --test <boolean> <boolean>, ";
+  cerr << "boolean: 0 - false, 1 - true" << endl;
 }
 
 pair<int, int> cli(int count, char* argv[]) {
-  if (count != 4 || string(argv[1]) != "--test") {
+  if(count != 4 || string(argv[1]) != "--test") {
     showUsage();
     throw exception();
+
   } else {
     bool p1 = atoi(argv[2]);
     bool p2 = atoi(argv[3]);
