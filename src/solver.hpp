@@ -2,29 +2,39 @@
 #define solver_h
 
 #include <iostream>
-// #include <chrono>
 #include <thread>
 #include <condition_variable>
 #include <mutex>
+#include <functional>
+#include <string>
 
 using namespace std;
 using namespace literals;
 
 class Solver {
-
-  using func = function<void()>;
-  bool res1, res2, done;
+  bool res1, res2, done, stopped;
   condition_variable cv;
   mutex m;
 
+  using func = function<void()>;
+
   void testFunc(func f);
+  void waitForStop();
 
 public:
 
-  Solver();
+  class Exception: public exception {
+    string msg;
+  public:
+    virtual const char* what() const throw();
+
+    Exception(const char*  msg = "Unexpected error");
+  };
+
+  Solver(bool x = false);
   Solver(bool a, bool b);
 
-  void manager();
+  bool manager(int ftime = 5, int gtime = 10);
 };
 
 #endif /* solver_h */
