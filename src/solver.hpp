@@ -2,14 +2,15 @@
 #define solver_h
 
 #include <iostream>
-#include <thread>
-#include <condition_variable>
-#include <mutex>
-#include <functional>
 #include <string>
+#include <mutex>
+#include <condition_variable>
+#include <thread>
+#include <chrono>
+
+#include <functional>
 
 using namespace std;
-using namespace literals;
 
 class Solver {
   bool res1, res2, done, stopped;
@@ -20,6 +21,7 @@ class Solver {
 
   void testFunc(func f);
   void waitForStop();
+  void askUserToStop(int s);
 
 public:
 
@@ -34,7 +36,7 @@ public:
   Solver(bool x = false);
   Solver(bool a, bool b);
 
-  bool manager(int ftime = 5, int gtime = 10);
+  bool manager(int ftime = 20, int gtime = 30);
 };
 
 #endif /* solver_h */

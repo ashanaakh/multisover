@@ -43,9 +43,9 @@ make clean
 ./build/solver --test 1 1 # result: 1
 ```
 
-### TODO
-* Tests
-* Stops
+### Tasks list
+- [ ] Tests
+- [x] Stops
 
 ## Status
 Working in progress
