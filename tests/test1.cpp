@@ -8,13 +8,12 @@ using namespace std::chrono;
 using std::cout;
 
 void test1() {
-  time_point<system_clock> start, end;
-  bool fRes = true, gRes = true;
-  int fSec = 1, gSec = 3;
-
-  Solver solver(fRes, gRes);
-
   try {
+    time_point<system_clock> start, end;
+    bool fRes = true, gRes = true;
+    int fSec = 1, gSec = 3;
+
+    Solver solver(fRes, gRes);
     start = system_clock::now();
     bool result = solver.manager(fSec, gSec);
     end = system_clock::now();
@@ -28,13 +27,13 @@ void test1() {
 }
 
 void test2() {
-  time_point<system_clock> start, end;
-  bool fRes = true, gRes = false;
-  int fSec = 2, gSec = 3;
-
-  Solver solver(fRes, gRes);
-
   try {
+    time_point<system_clock> start, end;
+    bool fRes = true, gRes = false;
+    int fSec = 2, gSec = 3;
+
+    Solver solver(fRes, gRes);
+
     start = system_clock::now();
     bool result = solver.manager(fSec, gSec);
     end = system_clock::now();

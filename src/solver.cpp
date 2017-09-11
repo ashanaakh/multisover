@@ -12,17 +12,17 @@ void Solver::testFunc(func function) {
   cv.notify_one();
 }
 
-Solver::Solver(bool a, bool b) : fRes(true), gRes(true), done(false), stopped(false),
-                                 fExpected(a), gExpected(b) {}
+Solver::Solver(bool a, bool b) : fRes(true), gRes(true), done(false),
+  stopped(false), fExpected(a), gExpected(b) {}
 
 void Solver::askUserToStop(int s) {
-  char answer;
-
   while(true) {
+    char answer;
+
     this_thread::sleep_for(chrono::seconds(s));
     cout << "Press y - to continue, q - to stop" << endl;
     answer = cin.get();
-    if(answer == 'q') break;
+    if(answer == 'q') { break; }
   }
 
   stopped = true;
@@ -82,8 +82,8 @@ bool Solver::manager(int ftime, int gtime) {
     if(not fRes || not gRes) {
       detachThreads();
     } else {
-      if(f->joinable()) f->join();
-      if(g->joinable()) g->join();
+      if(f->joinable()) { f->join(); }
+      if(g->joinable()) { g->join(); }
       stopper->detach();
       checker->detach();
     }

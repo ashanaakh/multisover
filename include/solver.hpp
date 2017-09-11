@@ -39,7 +39,7 @@ public:
     string msg;
   public:
     virtual const char* what() const throw();
-    Exception(const char*  msg = "Unexpected error");
+    explicit Exception(const char*  msg = "Unexpected error");
   };
 
   Solver(bool a, bool b);
