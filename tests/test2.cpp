@@ -10,37 +10,15 @@ using std::cout;
 void test1() {
   try {
     time_point<system_clock> start, end;
-    bool fRes = true, gRes = true;
-    int fSec = 3, gSec = 1;
 
-    Solver solver(fRes, gRes);
+    Solver solver;
 
     start = system_clock::now();
-    bool result = solver.manager(fSec, gSec);
+    bool result = solver.manager(2);
     end = system_clock::now();
 
-    assert(result);
-    assert(duration_cast<seconds>(end - start).count() == fSec);
-
-  } catch(exception& e) {
-    cout << e.what() << endl;
-  }
-}
-
-void test2() {
-  try {
-    time_point<system_clock> start, end;
-    bool fRes = false, gRes = true;
-    int fSec = 3, gSec = 2;
-
-    Solver solver(fRes, gRes);
-
-    start = system_clock::now();
-    bool result = solver.manager(fSec, gSec);
-    end = system_clock::now();
-
-    assert(not result);
-    assert(duration_cast<seconds>(end - start).count() == fSec);
+    assert(result == true);
+    assert(duration_cast<seconds>(end - start).count() == 3);
 
   } catch(exception& e) {
     cout << e.what() << endl;
@@ -50,7 +28,6 @@ void test2() {
 int main() {
 
   test1();
-  test2();
 
   return 0;
 }
