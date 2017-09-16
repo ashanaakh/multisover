@@ -6,14 +6,38 @@ const char* Solver::Exception::what() const throw() {
 
 Solver::Exception::Exception(const char*  msg) : msg(msg) {}
 
-void Solver::testFunc(func function) {
-  function();
+void Solver::f(int x) {
+  switch (x) {
+    case 1: action(fRes, true, 1); break;
+    case 2: action(fRes, true, 3); break;
+    case 3: action(fRes, false, 3); break;
+    default: exit(1);
+  }
+
   done = true;
   cv.notify_one();
 }
 
-Solver::Solver(bool a, bool b) : fRes(true), gRes(true), done(false),
-  stopped(false), fExpected(a), gExpected(b) {}
+void Solver::g(int x) {
+  switch(x) {
+    case 1: action(gRes, true, 3); break;
+    case 2: action(gRes, true, 1); break;
+    case 3: action(gRes, true, 4); break;
+    default: exit(1);
+  }
+
+  done = true;
+  cv.notify_one();
+}
+
+// void Solver::testFunc(func function) {
+//   function();
+//   done = true;
+//   cv.notify_one();
+// }
+
+Solver::Solver() : fRes(true), gRes(true), done(false),
+  stopped(false) {}
 
 void Solver::askUserToStop(int s) {
   while(true) {
@@ -41,23 +65,22 @@ void Solver::waitForStop() {
   cv.notify_all();
 }
 
+void Solver::action(bool &to, bool from, int time) {
+    this_thread::sleep_for(chrono::seconds(time));
+    to = from;
+}
+
 void Solver::detachThreads() {
   stopper->detach();
   checker->detach();
-  f->detach();
-  g->detach();
+  func_f->detach();
+  func_g->detach();
 }
 
-bool Solver::manager(int ftime, int gtime) {
-  f = new thread(&Solver::testFunc, this, [&] {
-    this_thread::sleep_for(chrono::seconds(ftime));
-    fRes = fExpected;
-  });
+bool Solver::manager(int x) {
 
-  g = new thread(&Solver::testFunc, this, [&] {
-    this_thread::sleep_for(chrono::seconds(gtime));
-    gRes = gExpected;
-  });
+  func_f = new thread(&Solver::f, this, x);
+  func_g = new thread(&Solver::g, this, x);
 
   stopper = new thread(&Solver::waitForStop, this);
   checker = new thread(&Solver::askUserToStop, this, 10);
@@ -70,8 +93,8 @@ bool Solver::manager(int ftime, int gtime) {
   if(stopped) {
     detachThreads();
 
-    delete f;
-    delete g;
+    delete func_f;
+    delete func_g;
     delete stopper;
     delete checker;
 
@@ -82,14 +105,14 @@ bool Solver::manager(int ftime, int gtime) {
     if(not fRes || not gRes) {
       detachThreads();
     } else {
-      if(f->joinable()) { f->join(); }
-      if(g->joinable()) { g->join(); }
+      if(func_f->joinable()) { func_f->join(); }
+      if(func_g->joinable()) { func_g->join(); }
       stopper->detach();
       checker->detach();
     }
 
-    delete f;
-    delete g;
+    delete func_f;
+    delete func_g;
     delete stopper;
     delete checker;
 

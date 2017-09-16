@@ -13,25 +13,25 @@
 using namespace std;
 
 class Solver {
+
   bool fRes, gRes;
-  const bool fExpected, gExpected;
   bool done;
   bool stopped;
 
-  thread* f;
-  thread* g;
   thread* stopper;
   thread* checker;
+  thread* func_f;
+  thread* func_g;
 
   condition_variable cv;
   mutex m;
 
-  using func = function<void()>;
-
+  void f(int x);
+  void g(int x);
   void detachThreads();
-  void testFunc(func f);
   void waitForStop();
   void askUserToStop(int s);
+  void action(bool &to, bool from, int time);
 
 public:
 
@@ -42,9 +42,9 @@ public:
     explicit Exception(const char*  msg = "Unexpected error");
   };
 
-  Solver(bool a, bool b);
+  Solver();
 
-  bool manager(int ftime, int gtime);
+  bool manager(int x);
 };
 
 #endif /* solver_h */
