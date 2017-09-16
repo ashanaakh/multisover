@@ -10,7 +10,6 @@ using std::cout;
 void test1() {
   try {
     time_point<system_clock> start, end;
-
     Solver solver;
 
     start = system_clock::now();

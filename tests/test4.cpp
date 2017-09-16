@@ -10,17 +10,14 @@ using std::cout;
 void test1() {
   try {
     time_point<system_clock> start, end;
-    bool fRes = true, gRes = false;
-    int fSec = 5, gSec = 3;
-
-    Solver solver(fRes, gRes);
+    Solver solver;
 
     start = system_clock::now();
-    bool result = solver.manager(fSec, gSec);
+    bool result = solver.manager(4);
     end = system_clock::now();
 
-    assert(not result);
-    assert(duration_cast<seconds>(end - start).count() == gSec);
+    assert(result == false);
+    assert(duration_cast<seconds>(end - start).count() == 3);
 
   } catch(exception& e) {
     cout << e.what() << endl;
