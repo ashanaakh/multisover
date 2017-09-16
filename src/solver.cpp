@@ -11,6 +11,7 @@ void Solver::f(int x) {
     case 1: action(fRes, true, 1); break;
     case 2: action(fRes, true, 3); break;
     case 3: action(fRes, false, 3); break;
+    case 4: action(fRes, true, 5); break;
     default: exit(1);
   }
 
@@ -23,6 +24,7 @@ void Solver::g(int x) {
     case 1: action(gRes, true, 3); break;
     case 2: action(gRes, true, 1); break;
     case 3: action(gRes, true, 4); break;
+    case 4: action(gRes, false, 3); break;
     default: exit(1);
   }
 
