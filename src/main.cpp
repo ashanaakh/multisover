@@ -7,8 +7,10 @@
 
 int main() {
 
+  try {
     Solver solver;
-    solver.manager(1);
+    solver.manager(10);
+  } catch(exception &e) {}
 
   return 0;
 }

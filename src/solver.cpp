@@ -6,13 +6,17 @@ const char* Solver::Exception::what() const throw() {
 
 Solver::Exception::Exception(const char*  msg) : msg(msg) {}
 
+Solver::Solver() : fRes(true), gRes(true), done(false), stopped(false) {}
+
 void Solver::f(int x) {
   switch (x) {
     case 1: action(fRes, true, 1); break;
     case 2: action(fRes, true, 3); break;
     case 3: action(fRes, false, 3); break;
     case 4: action(fRes, true, 5); break;
-    default: exit(1);
+    case 5: action(fRes, true, 5); break;
+    case 6: action(fRes, true, 5); break;
+    default: action(fRes, true, 20); break;
   }
 
   done = true;
@@ -25,46 +29,38 @@ void Solver::g(int x) {
     case 2: action(gRes, true, 1); break;
     case 3: action(gRes, true, 4); break;
     case 4: action(gRes, false, 3); break;
-    default: exit(1);
+    case 5: action(fRes, true, 5); break;
+    case 6: action(fRes, true, 5); break;
+    default: action(fRes, true, 30); break;
   }
 
   done = true;
   cv.notify_one();
 }
 
-// void Solver::testFunc(func function) {
-//   function();
-//   done = true;
-//   cv.notify_one();
-// }
-
-Solver::Solver() : fRes(true), gRes(true), done(false),
-  stopped(false) {}
-
 void Solver::askUserToStop(int s) {
   while(true) {
     char answer;
 
     this_thread::sleep_for(chrono::seconds(s));
-    cout << "Press y - to continue, q - to stop" << endl;
-    answer = cin.get();
-    if(answer == 'q') { break; }
+    printw("Press q - to stop: ");
+    answer = getch();
   }
 
   stopped = true;
-  cv.notify_all();
+  cv.notify_one();
 }
 
 void Solver::waitForStop() {
   char answer;
 
   while(true) {
-    answer = cin.get();
+    answer = getch();
     if(answer == 'q') break;
   }
 
   stopped = true;
-  cv.notify_all();
+  cv.notify_one();
 }
 
 void Solver::action(bool &to, bool from, int time) {
@@ -79,48 +75,50 @@ void Solver::detachThreads() {
   func_g->detach();
 }
 
+void Solver::deleteThreads() {
+  delete stopper;
+  delete checker;
+  delete func_f;
+  delete func_g;
+}
+
 bool Solver::manager(int x) {
+
+  initscr();
 
   func_f = new thread(&Solver::f, this, x);
   func_g = new thread(&Solver::g, this, x);
 
   stopper = new thread(&Solver::waitForStop, this);
-  checker = new thread(&Solver::askUserToStop, this, 10);
+  checker = new thread(&Solver::askUserToStop, this, 5);
 
   unique_lock<mutex> lock(m);
 
   while(not done) {
     cv.wait(lock);
 
-  if(stopped) {
-    detachThreads();
-
-    delete func_f;
-    delete func_g;
-    delete stopper;
-    delete checker;
-
-    throw Exception("Stopped by user");
-
-  } else if(done) {
-
-    if(not fRes || not gRes) {
+    if(stopped) {
       detachThreads();
-    } else {
-      if(func_f->joinable()) { func_f->join(); }
-      if(func_g->joinable()) { func_g->join(); }
+      deleteThreads();
+
+      endwin();
+      throw Exception("Stopped by user");
+    }
+
+    if(not fRes || not gRes) detachThreads();
+    else {
+      if(func_f->joinable()) func_f->join();
+      if(func_g->joinable()) func_g->join();
       stopper->detach();
       checker->detach();
     }
 
-    delete func_f;
-    delete func_g;
-    delete stopper;
-    delete checker;
+    deleteThreads();
 
+    endwin();
     return fRes && gRes;
-    }
   }
 
+  endwin();
   throw Exception();
 }

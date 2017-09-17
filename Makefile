@@ -1,10 +1,12 @@
-CXX          := clang++
+CXX          := clang++ -std=c++11
 
-CPPVER       := -std=c++11
+CXXFLAGS     := -Iinclude
 
-FLAGS        := -Iinclude
+LDFLAGS      := -lncurses
 
-SOURCES      := src/*.cpp
+SRCS         := src/*.cpp
+
+RM           := -@rm -rf
 
 BUILD_DIR    := build
 
@@ -26,33 +28,40 @@ NAME_TEST5   := test5
 
 NAME_TEST6   := test6
 
+# RED := '\033[0;31m'
+
+# NC := '\033[0m' # No Color
+
+
+
 define build_test
-	$(CXX) $(CPPVER) $(FLAGS) -c src/solver.cpp $(TESTS_DIR)/test$(1).cpp
+	$(CXX) $(CXXFLAGS) -c src/solver.cpp $(TESTS_DIR)/test$(1).cpp
 	@mv *.o tests_build
-	$(CXX) $(CPPVER) $(FLAGS) -o test$(1) tests_build/test$(1).o tests_build/solver.o
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o test$(1) tests_build/test$(1).o tests_build/solver.o
 endef
 
 define test
 	$(call build_test,$(1))
-	@./test$(1) && echo "Passed" || echo "Failed"
+	@./test$(1) && echo "\033[0;32m---> Passed <---" || echo "\033[0;32mXXX Failed XXX"
 endef
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): compile moveobj
-	$(CXX) $(CPPVER) $(FLAGS) -o $(BUILD_DIR)/$(EXECUTABLE) $(OBJECTS)
+$(EXECUTABLE): compile replace
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(BUILD_DIR)/$(EXECUTABLE) $(OBJECTS)
+  # printf "I \033[0;31m love $(NC) Stack Overflow"
 
-moveobj:
+replace:
 	@mv *.o build
 
 compile: clean
-	$(CXX) $(CPPVER) $(FLAGS) -c $(SOURCES) src/main.cpp
+	$(CXX) $(CXXFLAGS) -c $(SRCS) src/main.cpp
 
 clean:
-	-@rm -rf $(OBJECTS) $(BUILD_DIR)/$(EXECUTABLE)
+	$(RM) $(OBJECTS) $(BUILD_DIR)/$(EXECUTABLE)
 
 cleantest: clean
-	-@rm test[1-6]
+	$(RM) test[1-6]
 
 $(NAME_TEST1): cleantest
 	$(call test,1)

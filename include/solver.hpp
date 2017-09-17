@@ -1,14 +1,12 @@
 #ifndef solver_h
 #define solver_h
 
-#include <iostream>
 #include <string>
 #include <mutex>
 #include <condition_variable>
 #include <thread>
 #include <chrono>
-
-#include <functional>
+#include <ncurses.h>
 
 using namespace std;
 
@@ -29,6 +27,7 @@ class Solver {
   void f(int x);
   void g(int x);
   void detachThreads();
+  void deleteThreads();
   void waitForStop();
   void askUserToStop(int s);
   void action(bool &to, bool from, int time);
