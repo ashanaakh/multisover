@@ -44,11 +44,21 @@ make clean
 ```
 
 ### Tasks list
-- [ ] Tests
+- [x] Tests
 - [x] Stops
 
+# Tests
+| x | f.time | f.val | g.time | g.val | res.time | res.val |
+|:-:|:------:|:-----:|:------:|:-----:|:--------:|:-------:|
+| 1 |   1s   | true  |   3s   | true  |    3s    |  true   |
+| 2 |   3s   | true  |   1s   | true  |    3s    |  true   |
+| 3 |   3s   | false |   4s   | true  |    3s    |  false  |
+| 4 |   5s   | true  |   3s   | false |    3s    |  false  |
+| 5 |   10s  | true  |   8s   | false |  cancel  |canceled |
+| 6 |   6s   | false |   7s   | true  |  cancel  |canceled |
+
 ## Status
-Working in progress
+Ready
 
 ## License
 [MIT](LICENSE)
