@@ -28,12 +28,6 @@ NAME_TEST5   := test5
 
 NAME_TEST6   := test6
 
-# RED := '\033[0;31m'
-
-# NC := '\033[0m' # No Color
-
-
-
 define build_test
 	$(CXX) $(CXXFLAGS) -c src/solver.cpp $(TESTS_DIR)/test$(1).cpp
 	@mv *.o tests_build
@@ -42,14 +36,13 @@ endef
 
 define test
 	$(call build_test,$(1))
-	@./test$(1) && echo "\033[0;32m---> Passed <---" || echo "\033[0;32mXXX Failed XXX"
+	@./test$(1) && echo "\033[0;32m---> Passed <---\033[0m" || echo "\033[0;32mXXX Failed XXX\033[0m"
 endef
 
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): compile replace
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(BUILD_DIR)/$(EXECUTABLE) $(OBJECTS)
-  # printf "I \033[0;31m love $(NC) Stack Overflow"
 
 replace:
 	@mv *.o build
@@ -80,3 +73,5 @@ $(NAME_TEST5): cleantest
 
 $(NAME_TEST6): cleantest
 	$(call test,6)
+
+test: $(NAME_TEST1) $(NAME_TEST2) $(NAME_TEST3) $(NAME_TEST4) $(NAME_TEST5) $(NAME_TEST6)

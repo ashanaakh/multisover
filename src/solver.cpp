@@ -14,8 +14,8 @@ void Solver::f(int x) {
     case 2: action(fRes, true, 3); break;
     case 3: action(fRes, false, 3); break;
     case 4: action(fRes, true, 5); break;
-    case 5: action(fRes, true, 5); break;
-    case 6: action(fRes, true, 5); break;
+    case 5: action(fRes, true, 10); break;
+    case 6: action(fRes, false, 6); break;
     default: action(fRes, true, 20); break;
   }
 
@@ -29,9 +29,9 @@ void Solver::g(int x) {
     case 2: action(gRes, true, 1); break;
     case 3: action(gRes, true, 4); break;
     case 4: action(gRes, false, 3); break;
-    case 5: action(fRes, true, 5); break;
-    case 6: action(fRes, true, 5); break;
-    default: action(fRes, true, 30); break;
+    case 5: action(gRes, false, 8); break;
+    case 6: action(gRes, true, 7); break;
+    default: action(gRes, true, 30); break;
   }
 
   done = true;
@@ -40,11 +40,9 @@ void Solver::g(int x) {
 
 void Solver::askUserToStop(int s) {
   while(true) {
-    char answer;
-
     this_thread::sleep_for(chrono::seconds(s));
-    printw("Press q - to stop: ");
-    answer = getch();
+    printw("Press q - to stop: \n");
+    refresh();
   }
 
   stopped = true;
