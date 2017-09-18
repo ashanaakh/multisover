@@ -6,6 +6,7 @@
 #include <condition_variable>
 #include <thread>
 #include <chrono>
+#include <iostream>
 #include <ncurses.h>
 
 using namespace std;
@@ -13,8 +14,9 @@ using namespace std;
 class Solver {
 
   bool fRes, gRes;
-  bool done;
   bool stopped;
+  bool notified;
+  bool showPrompt;
 
   thread* stopper;
   thread* checker;
