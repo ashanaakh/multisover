@@ -9,7 +9,7 @@ Solver::Exception::Exception(const char*  msg) : msg(msg) {}
 Solver::Solver() : fRes(true), gRes(true), stopped(false), notified(false), showPrompt(true) {}
 
 void Solver::f(int x) {
-  switch (x) {
+  switch(x) {
     case 1: action(fRes, true, 1); break;
     case 2: action(fRes, true, 3); break;
     case 3: action(fRes, false, 3); break;
@@ -19,8 +19,11 @@ void Solver::f(int x) {
     default: action(fRes, true, 20); break;
   }
 
-  notified = true;
-  cv.notify_one();
+  {
+    unique_lock<mutex> lock(cs);
+    notified = true;
+    cv.notify_one();
+  }
 }
 
 void Solver::g(int x) {
@@ -34,15 +37,18 @@ void Solver::g(int x) {
     default: action(gRes, true, 30); break;
   }
 
-  notified = true;
-  cv.notify_one();
+  {
+    unique_lock<mutex> lock(cs);
+    notified = true;
+    cv.notify_one();
+  }
 }
 
 void Solver::askUserToStop(int s) {
   while(showPrompt) {
     this_thread::sleep_for(chrono::seconds(s));
-    if (showPrompt) {
-      printw("Press q - to stop, y - to continue without prompt\n"); 
+    if(showPrompt) {
+      printw("Press q - to stop, y - to continue without prompt\n");
     } else {
       clear();
     }
@@ -58,8 +64,11 @@ void Solver::waitForStop() {
     else if(answer == 'y') showPrompt = false;
   }
 
-  notified = stopped = true;
-  cv.notify_one();
+  {
+    unique_lock<mutex> lock(cs);
+    notified = stopped = true;
+    cv.notify_one();
+  }
 }
 
 void Solver::action(bool &to, bool from, int time) {
@@ -93,32 +102,40 @@ bool Solver::manager(int x) {
   unique_lock<mutex> lock(m);
 
   while(true) {
-    cv.wait(lock);
 
-    if (notified) {
+    cs.lock();
+    if (!notified) {
+      cs.unlock();
 
-      if(stopped) {
-        detachThreads();
+      cv.wait(lock);
+
+      if(notified) {
+
+        if(stopped) {
+          detachThreads();
+          deleteThreads();
+
+          endwin();
+          throw Exception("Stopped by user");
+        } else if(not fRes || not gRes) {
+          detachThreads();
+        } else {
+          func_f->join();
+          func_g->join();
+          stopper->detach();
+          checker->detach();
+        }
+
         deleteThreads();
 
+        bool result = fRes && gRes;
         endwin();
-        throw Exception("Stopped by user");
-      } else if(not fRes || not gRes) {
-        detachThreads();
-      } else {
-        func_f->join();
-        func_g->join();
-        stopper->detach();
-        checker->detach();
+
+        std::cout << boolalpha << result << endl;
+        return result;
       }
-
-      deleteThreads();
-
-      bool result = fRes && gRes;
-      endwin();
-
-      cout << "Result: " << (result ? "true" : "false") << endl;
-      return result;
+    } else {
+      cs.unlock();
     }
   }
 

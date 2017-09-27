@@ -25,6 +25,7 @@ class Solver {
 
   condition_variable cv;
   mutex m;
+  mutex cs;
 
   void f(int x);
   void g(int x);
