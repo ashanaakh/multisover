@@ -2,7 +2,7 @@ CXX          := clang++ -std=c++11
 
 CXXFLAGS     := -Iinclude
 
-LDFLAGS      := -lncurses -lpthread 
+LDFLAGS      := -lncurses -lpthread
 
 SRCS         := src/*.cpp
 
