@@ -53,21 +53,21 @@ void Solver::askUserToStop(int s) {
 
     char answer;
 
-    kekos.lock();
+    pm.lock();
     answer = cin.get();
 
     if (answer == 'q') {
-      kekos.unlock();
+      pm.unlock();
       unique_lock<mutex> lock(safety);
       notified = stopped = true;
       cv.notify_one();
       break;
     } else if (answer == 'y') {
       showPrompt = false;
-      kekos.unlock();
+      pm.unlock();
       break;
     } else if (answer == 'c') {
-      kekos.unlock();
+      pm.unlock();
     }
   }
 }
@@ -109,17 +109,17 @@ bool Solver::manager(int x) {
           deleteThreads();
           throw Exception("Stopped by user");
         } else if(not fRes || not gRes) {
-          kekos.lock();
+          pm.lock();
           detachThreads();
-          kekos.unlock();
+          pm.unlock();
         } else {
 
           func_f->join();
           func_g->join();
 
-          kekos.lock();
+          pm.lock();
           checker->detach();
-          kekos.unlock();
+          pm.unlock();
         }
 
         deleteThreads();
