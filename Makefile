@@ -68,10 +68,11 @@ $(NAME_TEST3): cleantest
 $(NAME_TEST4): cleantest
 	$(call test,4)
 
-$(NAME_TEST5): cleantest
-	$(call test,5)
+# $(NAME_TEST5): cleantest
+	# $(call test,5)
 
-$(NAME_TEST6): cleantest
-	$(call test,6)
+# $(NAME_TEST6): cleantest
+	# $(call test,6)
 
-test: $(NAME_TEST1) $(NAME_TEST2) $(NAME_TEST3) $(NAME_TEST4) $(NAME_TEST5) $(NAME_TEST6)
+# test: $(NAME_TEST1) $(NAME_TEST2) $(NAME_TEST3) $(NAME_TEST4) $(NAME_TEST5) $(NAME_TEST6)
+test: $(NAME_TEST1) $(NAME_TEST2) $(NAME_TEST3) $(NAME_TEST4)

@@ -7,7 +7,6 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
-#include <ncurses.h>
 
 using namespace std;
 
@@ -18,14 +17,14 @@ class Solver {
   bool notified;
   bool showPrompt;
 
-  thread* stopper;
   thread* checker;
   thread* func_f;
   thread* func_g;
 
   condition_variable cv;
   mutex m;
-  mutex cs;
+  mutex kekos;
+  mutex safety;
 
   void f(int x);
   void g(int x);

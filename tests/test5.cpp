@@ -2,7 +2,7 @@
 #include <cassert>
 #include <iostream>
 #include <thread>
-#include <ncurses.h>
+
 
 #include "solver.hpp"
 
@@ -11,7 +11,7 @@ using std::cout;
 
 void cancel() {
   this_thread::sleep_for(chrono::seconds(6));
-  printw("q");
+  cout << "q\n";
 }
 
 void test1() {
