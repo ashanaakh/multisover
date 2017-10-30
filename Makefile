@@ -1,31 +1,17 @@
 CXX          := clang++ -std=c++11
-
 CXXFLAGS     := -Iinclude
-
 LDFLAGS      := -lncurses -lpthread
-
 SRCS         := src/*.cpp
-
 RM           := -@rm -rf
-
 BUILD_DIR    := build
-
 OBJECTS      := $(BUILD_DIR)/*.o
-
 TESTS_DIR    := tests
-
 EXECUTABLE 	 := solver
-
 NAME_TEST1   := test1
-
 NAME_TEST2   := test2
-
 NAME_TEST3   := test3
-
 NAME_TEST4   := test4
-
 NAME_TEST5   := test5
-
 NAME_TEST6   := test6
 
 define build_test
@@ -68,11 +54,4 @@ $(NAME_TEST3): cleantest
 $(NAME_TEST4): cleantest
 	$(call test,4)
 
-# $(NAME_TEST5): cleantest
-	# $(call test,5)
-
-# $(NAME_TEST6): cleantest
-	# $(call test,6)
-
-# test: $(NAME_TEST1) $(NAME_TEST2) $(NAME_TEST3) $(NAME_TEST4) $(NAME_TEST5) $(NAME_TEST6)
 test: $(NAME_TEST1) $(NAME_TEST2) $(NAME_TEST3) $(NAME_TEST4)

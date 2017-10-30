@@ -23,7 +23,7 @@ class Solver {
 
   condition_variable cv;
   mutex m;
-  mutex kekos;
+  mutex pm;
   mutex safety;
 
   void f(int x);
