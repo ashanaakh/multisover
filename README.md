@@ -28,19 +28,25 @@ make clean
 ```
 
 ### Usage
+
+Run test binary:
 ```shell
-./build/solver --test <boolean> <boolean>
+./build/solver
 ```
 
-| boolean | value |
-|:-------:|:-----:|
-| true    |   0   |
-| false   |   1   |
-
-### Example
+Build and run tests:
 ```shell
-./build/solver --test 0 1 # result: 0
-./build/solver --test 1 1 # result: 1
+make test
+```
+
+Build tests from
+```shell
+make test1
+```
+to
+
+```shell
+make test4
 ```
 
 ### Tasks list
