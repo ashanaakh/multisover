@@ -1,15 +1,18 @@
-# Solver
+[codacy]: https://www.codacy.com/app/ashanaakh/multisover
+[wiki]: https://en.wikipedia.org/wiki/Logical_conjunction#Truth_table
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1fe9046f03124dcc8b97a5e9f86be9cf)](https://www.codacy.com/app/ashanaakh/multisover)
+# Multisolver
 
-## About
-[Lab work 1](https://drive.google.com/drive/u/0/folders/0B-BUpwNPP_9JNURqcm53R1dXam8)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1fe9046f03124dcc8b97a5e9f86be9cf)][codacy]
 
-### Task `V16`
-Use C++, threads, condvars and global vars or attributes to pass the result
-of function computation.
+## Overview
 
-### Conjunction
+Use C++, threads, condvars and global vars or attributes to pass the result of function computation.
+
+**Function**: [conjunction][wiki]
+
+### Truth table
+
 | A  | B  | A ∧ B |
 |:--:|:--:|:-----:|
 | 0  | 0  |   0   |
@@ -17,43 +20,28 @@ of function computation.
 | 1  | 0  |   0   |
 | 1  | 1  |   1   |
 
-### Build
-```shell
+## Usage
+
+**Build**
+
+```
 make
 ```
 
-### Clean binaries
-```shell
+**Clean binaries**
+
+```
 make clean
 ```
 
-### Usage
+**Run binary**
 
-Run test binary:
-```shell
+```
 ./build/solver
 ```
 
-Build and run tests:
-```shell
-make test
-```
-
-Build tests from
-```shell
-make test1
-```
-to
-
-```shell
-make test4
-```
-
-### Tasks list
-- [x] Tests
-- [x] Stops
-
 # Tests
+
 | x | f.time | f.val | g.time | g.val | res.time | res.val |
 |:-:|:------:|:-----:|:------:|:-----:|:--------:|:-------:|
 | 1 |   1s   | true  |   3s   | true  |    3s    |  true   |
@@ -63,8 +51,19 @@ make test4
 | 5 |   10s  | true  |   8s   | false |  cancel  |canceled |
 | 6 |   6s   | false |   7s   | true  |  cancel  |canceled |
 
-## Status
-Ready
+Build and run all tests:
+
+```
+make test
+```
+
+You can build and run specific test.
+
+*Example*
+
+```
+make test
+```
 
 ## License
-[MIT](LICENSE)
+This project is under the MIT License. See the LICENSE file for the full license text.
